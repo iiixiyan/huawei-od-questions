@@ -53,6 +53,7 @@ body {
 .markdown-body hr { margin: 16px 0; border: none; border-top: 1px solid #eee; }
 .markdown-body img { max-width: 100%; border-radius: 6px; }
 
+/* --- Code Block Wrapper --- */
 .code-block-wrapper {
   position: relative;
   margin: 10px 0;
@@ -90,6 +91,147 @@ body {
 }
 .copy-btn:hover { background: rgba(255,255,255,.2); color: #fff; }
 
+/* --- Code Template <pre> (代码模板 Tab) --- */
+.code-template-pre {
+  background: #1a1b26 !important;
+  color: #c0caf5 !important;
+  padding: 16px !important;
+  border-radius: 8px !important;
+  overflow-x: auto !important;
+  font-size: 13.5px !important;
+  line-height: 1.55 !important;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace !important;
+  font-variant-ligatures: normal !important;
+  border: 1px solid rgba(255,255,255,.06) !important;
+}
+.code-template-pre code {
+  background: none !important;
+  padding: 0 !important;
+  font-size: inherit !important;
+}
+
+/* --- Detail Page Two-Column Layout --- */
+.detail-layout {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+/* Sidebar */
+.detail-sidebar {
+  width: 280px;
+  min-width: 280px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #e8e8e8;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 12px;
+  max-height: calc(100vh - 100px);
+}
+
+.sidebar-header {
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sidebar-count {
+  font-size: 12px;
+  font-weight: 400;
+  color: #999;
+}
+
+.sidebar-filters {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.sidebar-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+.sidebar-list::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-list::-webkit-scrollbar-thumb {
+  background: #d0d0d0;
+  border-radius: 2px;
+}
+
+.sidebar-item {
+  padding: 7px 12px;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: all 0.15s ease;
+}
+.sidebar-item:hover {
+  background: #f5f7fa;
+}
+.sidebar-item.active {
+  background: #e6f4ff;
+  border-left-color: #1677ff;
+}
+
+.sidebar-item-title {
+  font-size: 12.5px;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 2px;
+  word-break: break-word;
+}
+.sidebar-item.active .sidebar-item-title {
+  color: #1677ff;
+  font-weight: 500;
+}
+
+.sidebar-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #999;
+}
+.sidebar-item-pid {
+  color: #bbb;
+  font-family: 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 10.5px;
+}
+.sidebar-item-tags {
+  color: #aaa;
+  font-size: 10.5px;
+}
+
+/* Main content area */
+.detail-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Responsive: collapse sidebar on small screens */
+@media (max-width: 900px) {
+  .detail-layout {
+    flex-direction: column;
+  }
+  .detail-sidebar {
+    width: 100%;
+    min-width: 0;
+    position: static;
+    max-height: none;
+    margin-bottom: 12px;
+  }
+  .sidebar-list {
+    max-height: 300px;
+  }
+}
+
+/* --- Scrollbar --- */
 html { scroll-behavior: smooth; }
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
