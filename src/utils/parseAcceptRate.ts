@@ -1,4 +1,4 @@
-import type { ParsedAcceptRate, Question } from '../types/question';
+import type { ParsedAcceptRate, IndexItem } from '../types/question';
 
 export function parseAcceptRate(str: string): ParsedAcceptRate {
   const parts = str.split('/');
@@ -8,7 +8,7 @@ export function parseAcceptRate(str: string): ParsedAcceptRate {
   return { passed, total, percentage: total > 0 ? Math.round(passed / total * 100) : 0 };
 }
 
-export function getAllTags(questions: Question[]): string[] {
+export function getAllTags(questions: IndexItem[]): string[] {
   const set = new Set<string>();
   for (const q of questions) {
     const tags = q.tags || q.topics || [];

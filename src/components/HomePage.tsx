@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Card, Row, Col, Statistic, Tag, Progress } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import type { TopLevel } from '../types/question';
+import type { IndexData } from '../types/question';
 import { getAllTags, parseAcceptRate, getDifficultyLabel, getDifficultyColor } from '../utils/parseAcceptRate';
 import MarkdownRenderer from './MarkdownRenderer';
 
-const DATA_URL = '/data.json';
+const BASE = import.meta.env.BASE_URL;
+const DATA_URL = BASE + 'index.json';
 
 export default function HomePage() {
-  const [data, setData] = useState<TopLevel | null>(null);
+  const [data, setData] = useState<IndexData | null>(null);
   const nav = useNavigate();
 
   useEffect(() => {
-    fetch(DATA_URL).then(r => r.json()).then(setData).catch(() => {});
+    fetch(DATA_URL).then(r => r.json()).then(setData).catch(() => setData(null));
   }, []);
 
   if (!data) return <Card loading style={{ minHeight: 400 }} />;

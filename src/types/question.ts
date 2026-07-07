@@ -13,6 +13,18 @@ export interface Question {
   topics?: string[];
 }
 
+/** Lightweight index entry — no description/code/solution */
+export interface IndexItem {
+  pid: string;
+  title: string;
+  date: string;
+  difficulty: number;
+  tags: string[];
+  has_signature: boolean;
+  accept_rate: string;
+  topics?: string[];
+}
+
 export interface TopLevel {
   题库名称: string;
   题库描述: string;
@@ -20,6 +32,12 @@ export interface TopLevel {
   总题数: number;
   有完整函数签名: number;
   题目列表: Question[];
+}
+
+export interface IndexData {
+  题库说明: string;
+  有完整函数签名: number;
+  题目列表: IndexItem[];
 }
 
 export interface ParsedAcceptRate {

@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Card, Row, Col, Tag, Empty, Badge } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import type { TopLevel } from '../types/question';
+import type { IndexData } from '../types/question';
 import { useFavorites } from '../hooks/useFavorites';
 import { parseAcceptRate } from '../utils/parseAcceptRate';
 
-const DATA_URL = '/data.json';
+const BASE = import.meta.env.BASE_URL;
+const DATA_URL = BASE + 'index.json';
 
 export default function Favorites() {
-  const [data, setData] = useState<TopLevel | null>(null);
+  const [data, setData] = useState<IndexData | null>(null);
   const { favorites } = useFavorites();
   const nav = useNavigate();
 

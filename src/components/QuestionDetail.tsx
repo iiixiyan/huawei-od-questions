@@ -2,33 +2,34 @@ import { useEffect, useState } from 'react';
 import { Card, Tag, Button, Radio, Space, Progress, message, Tabs } from 'antd';
 import { useParams, useNavigate } from 'react-router-dom';
 import { HeartOutlined, HeartFilled, ArrowLeftOutlined } from '@ant-design/icons';
-import type { TopLevel } from '../types/question';
+import type { Question } from '../types/question';
 import { parseAcceptRate, getDifficultyColor } from '../utils/parseAcceptRate';
 import { useFavorites } from '../hooks/useFavorites';
 import { useProgress } from '../hooks/useProgress';
 import MarkdownRenderer from './MarkdownRenderer';
 
-const DATA_URL = '/data.json';
+const BASE = import.meta.env.BASE_URL;
 const LANG_LABELS: Record<string, string> = { py: 'Python', java: 'Java', cc: 'C++', js: 'JavaScript', c: 'C' };
 const LANG_KEYS = ['py', 'java', 'cc', 'js', 'c'];
 
 export default function QuestionDetail() {
   const { pid } = useParams<{ pid: string }>();
   const nav = useNavigate();
-  const [data, setData] = useState<TopLevel | null>(null);
+  const [q, setQ] = useState<Question | null>(null);
   const [codeLang, setCodeLang] = useState('py');
   const { isFavorite, toggleFavorite } = useFavorites();
   const { getStatus, setStatus } = useProgress();
   const [tab, setTab] = useState('desc');
 
   useEffect(() => {
-    fetch(DATA_URL).then(r => r.json()).then(setData).catch(() => {});
-  }, []);
+    if (!pid) return;
+    fetch(BASE + 'questions/' + pid + '.json').then(r => {
+      if (!r.ok) throw new Error('Not found');
+      return r.json();
+    }).then(setQ).catch(() => setQ(null));
+  }, [pid]);
 
-  if (!data) return <Card loading style={{ minHeight: 400 }} />;
-
-  const q = data.题目列表.find(p => p.pid === pid);
-  if (!q) return <Card><div style={{ textAlign: 'center', padding: 40, color: '#999' }}>题目不存在</div></Card>;
+  if (!q) return <Card loading style={{ minHeight: 400 }} />;
 
   const rate = parseAcceptRate(q.accept_rate || '');
   const tags = q.tags || q.topics || [];

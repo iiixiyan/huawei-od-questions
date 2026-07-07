@@ -1,13 +1,14 @@
 import { useEffect, useState, useMemo } from 'react';
 import { Card, Input, Select, Row, Col, Tag, Empty, Badge } from 'antd';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import type { TopLevel } from '../types/question';
+import type { IndexData } from '../types/question';
 import { getAllTags, parseAcceptRate } from '../utils/parseAcceptRate';
 
-const DATA_URL = '/data.json';
+const BASE = import.meta.env.BASE_URL;
+const DATA_URL = BASE + 'index.json';
 
 export default function QuestionList() {
-  const [data, setData] = useState<TopLevel | null>(null);
+  const [data, setData] = useState<IndexData | null>(null);
   const [searchParams] = useSearchParams();
   const initTag = searchParams.get('tag') || '';
   const nav = useNavigate();
