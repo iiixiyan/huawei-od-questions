@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { Card, Input, Select, Row, Col, Tag, Empty, Badge } from 'antd';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import type { TopLevel, Question } from '../types/question';
+import type { TopLevel } from '../types/question';
 import { getAllTags, parseAcceptRate } from '../utils/parseAcceptRate';
 
 const DATA_URL = '/data.json';

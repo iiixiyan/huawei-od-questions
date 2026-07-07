@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Card, Row, Col, Statistic, Tag, Progress } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import type { TopLevel, Question } from '../types/question';
+import type { TopLevel } from '../types/question';
 import { getAllTags, parseAcceptRate, getDifficultyLabel, getDifficultyColor } from '../utils/parseAcceptRate';
 import MarkdownRenderer from './MarkdownRenderer';
 

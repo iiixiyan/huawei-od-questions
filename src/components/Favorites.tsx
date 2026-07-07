@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Card, Row, Col, Tag, Empty, Badge } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import type { TopLevel, Question } from '../types/question';
+import type { TopLevel } from '../types/question';
 import { useFavorites } from '../hooks/useFavorites';
 import { parseAcceptRate } from '../utils/parseAcceptRate';
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Card, Tag, Button, Radio, Space, Progress, message, Tabs } from 'antd';
 import { useParams, useNavigate } from 'react-router-dom';
 import { HeartOutlined, HeartFilled, ArrowLeftOutlined } from '@ant-design/icons';
-import type { TopLevel, Question, ProgressStatus } from '../types/question';
+import type { TopLevel } from '../types/question';
 import { parseAcceptRate, getDifficultyColor } from '../utils/parseAcceptRate';
 import { useFavorites } from '../hooks/useFavorites';
 import { useProgress } from '../hooks/useProgress';

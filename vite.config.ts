@@ -7,9 +7,9 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          antd: ['antd'],
-          markdown: ['react-markdown', 'remark-gfm'],
+        manualChunks(id: string) {
+          if (id.includes('node_modules/antd')) return 'antd';
+          if (id.includes('node_modules/react-markdown') || id.includes('node_modules/remark-gfm')) return 'markdown';
         }
       }
     },
