@@ -88,7 +88,7 @@ export default function QuestionDetail() {
           {
             key: 'solution',
             label: '📖 题解',
-            children: <MarkdownRenderer content={q.solution} />
+            children: <MarkdownRenderer content={(q.solution || '').replace(/^#code-switcher\s*$/gm, '').replace(/^#hot100-card.*$/gm, '')} />
           },
           {
             key: 'template',
@@ -110,7 +110,7 @@ export default function QuestionDetail() {
                       navigator.clipboard.writeText(codeTemplate);
                       message.success('已复制');
                     }}>📋 复制</button>
-                    <pre style={{ background: '#1e1e1e', color: '#d4d4d4', padding: 14, borderRadius: 8, overflowX: 'auto', fontSize: 13, lineHeight: 1.6 }}>
+                    <pre style={{ background: '#1a1b26', color: '#a9b1d6', padding: 16, borderRadius: 8, overflowX: 'auto', fontSize: 14, lineHeight: 1.5, fontFamily: "'JetBrains Mono','Fira Code','Cascadia Code','Consolas','Monaco','Menlo',monospace", fontVariantLigatures: 'normal' }}>
                       <code>{codeTemplate}</code>
                     </pre>
                   </div>
