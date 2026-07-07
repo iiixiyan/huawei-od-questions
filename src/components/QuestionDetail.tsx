@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { Card, Tag, Button, Radio, Space, Progress, message, Tabs } from 'antd';
+import { useEffect, useState, useMemo } from 'react';
+import { Card, Tag, Button, Radio, Space, Progress, message, Tabs, Input, Select } from 'antd';
 import { useParams, useNavigate } from 'react-router-dom';
 import { HeartOutlined, HeartFilled, ArrowLeftOutlined } from '@ant-design/icons';
 import type { Question } from '../types/question';
-import { parseAcceptRate, getDifficultyColor } from '../utils/parseAcceptRate';
+import { parseAcceptRate, getDifficultyColor, getAllTags } from '../utils/parseAcceptRate';
 import { useFavorites } from '../hooks/useFavorites';
 import { useProgress } from '../hooks/useProgress';
 import MarkdownRenderer from './MarkdownRenderer';
@@ -11,6 +11,10 @@ import MarkdownRenderer from './MarkdownRenderer';
 const BASE = import.meta.env.BASE_URL;
 const LANG_LABELS: Record<string, string> = { py: 'Python', java: 'Java', cc: 'C++', js: 'JavaScript', c: 'C' };
 const LANG_KEYS = ['py', 'java', 'cc', 'js', 'c'];
+
+const statusColors: Record<string, string> = {
+  '3': '#52c41a', '4': '#73d13d', '5': '#faad14', '6': '#ff4d4f', '7': '#722ed1', '8': '#722ed1'
+};
 
 export default function QuestionDetail() {
   const { pid } = useParams<{ pid: string }>();
@@ -21,6 +25,13 @@ export default function QuestionDetail() {
   const { getStatus, setStatus } = useProgress();
   const [tab, setTab] = useState('desc');
 
+  // Sidebar state
+  const [allQuestions, setAllQuestions] = useState<any[]>([]);
+  const [allTags, setAllTags] = useState<string[]>([]);
+  const [sidebarSearch, setSidebarSearch] = useState('');
+  const [sidebarTag, setSidebarTag] = useState<string | null>(null);
+
+  // Load question data
   useEffect(() => {
     if (!pid) return;
     fetch(BASE + 'questions/' + pid + '.json').then(r => {
@@ -28,6 +39,28 @@ export default function QuestionDetail() {
       return r.json();
     }).then(setQ).catch(() => setQ(null));
   }, [pid]);
+
+  // Load sidebar list
+  useEffect(() => {
+    fetch(BASE + 'index.json').then(r => r.json()).then(data => {
+      const items = data.题目列表 || [];
+      setAllQuestions(items);
+      setAllTags(getAllTags(items));
+    }).catch(() => {});
+  }, []);
+
+  // Filtered sidebar
+  const filteredSidebar = useMemo(() => {
+    let list = [...allQuestions];
+    if (sidebarSearch) {
+      const qs = sidebarSearch.toLowerCase();
+      list = list.filter(p => p.title.toLowerCase().includes(qs) || p.pid.toLowerCase().includes(qs));
+    }
+    if (sidebarTag) {
+      list = list.filter(p => (p.tags || p.topics || []).includes(sidebarTag));
+    }
+    return list;
+  }, [allQuestions, sidebarSearch, sidebarTag]);
 
   if (!q) return <Card loading style={{ minHeight: 400 }} />;
 
@@ -39,8 +72,8 @@ export default function QuestionDetail() {
   const ct = q.code_templates || {};
   const codeTemplate = ct[codeLang] || ct[codeLang + '.py3'] || ct[codeLang + '.cc14o2'] || '';
 
-  return (
-    <div>
+  const renderingContent = (
+    <div style={{ flex: 1, minWidth: 0 }}>
       <Button type="link" icon={<ArrowLeftOutlined />} onClick={() => nav('/questions')}
         style={{ padding: 0, marginBottom: 12 }}>返回列表</Button>
 
@@ -110,7 +143,7 @@ export default function QuestionDetail() {
                       navigator.clipboard.writeText(codeTemplate);
                       message.success('已复制');
                     }}>📋 复制</button>
-                    <pre style={{ background: '#1a1b26', color: '#a9b1d6', padding: 16, borderRadius: 8, overflowX: 'auto', fontSize: 14, lineHeight: 1.5, fontFamily: "'JetBrains Mono','Fira Code','Cascadia Code','Consolas','Monaco','Menlo',monospace", fontVariantLigatures: 'normal' }}>
+                    <pre className="code-template-pre">
                       <code>{codeTemplate}</code>
                     </pre>
                   </div>
@@ -122,6 +155,61 @@ export default function QuestionDetail() {
           }
         ]} />
       </Card>
+    </div>
+  );
+
+  return (
+    <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+      {/* Left sidebar: question list */}
+      <Card size="small" style={{ width: 300, flexShrink: 0, position: 'sticky', top: 16, maxHeight: 'calc(100vh - 40px)', overflowY: 'auto' }}
+        title={<span style={{ fontSize: 14 }}>📋 题目列表 <span style={{ color: '#999', fontWeight: 400 }}>({allQuestions.length})</span></span>}>
+        <div style={{ marginBottom: 8 }}>
+          <Input.Search placeholder="搜索题目名/PID" size="small" value={sidebarSearch}
+            onChange={e => setSidebarSearch(e.target.value)} allowClear />
+        </div>
+        <div style={{ marginBottom: 8 }}>
+          <Select placeholder="分类筛选" size="small" allowClear style={{ width: '100%' }}
+            value={sidebarTag} onChange={setSidebarTag}>
+            {allTags.map(t => <Select.Option key={t} value={t}>{t}</Select.Option>)}
+          </Select>
+        </div>
+        <div style={{ fontSize: 11, color: '#999', marginBottom: 6 }}>
+          共 {filteredSidebar.length} 题
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {filteredSidebar.map(item => {
+            const isActive = item.pid === pid;
+            const itemTags = item.tags || item.topics || [];
+            return (
+              <div key={item.pid} onClick={() => nav('/question/' + item.pid)}
+                style={{
+                  padding: '6px 8px', borderRadius: 4, cursor: 'pointer', fontSize: 12,
+                  background: isActive ? '#e6f4ff' : 'transparent',
+                  borderLeft: isActive ? '3px solid #1677ff' : '3px solid transparent',
+                  transition: 'all 0.15s'
+                }}
+                onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = '#f5f5f5'; }}
+                onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent'; }}>
+                <div style={{ fontWeight: isActive ? 600 : 400, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {item.title}
+                </div>
+                <div style={{ display: 'flex', gap: 4, alignItems: 'center', marginTop: 2 }}>
+                  <span style={{ color: '#999', fontSize: 10 }}>{item.pid}</span>
+                  <Tag color={statusColors[String(item.difficulty)] || 'default'} style={{ fontSize: 9, lineHeight: '14px', padding: '0 3px', margin: 0 }}>
+                    L{item.difficulty}
+                  </Tag>
+                  {itemTags.slice(0, 1).map((t: string) => (
+                    <span key={t} style={{ color: '#bbb', fontSize: 9 }}>{t}</span>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </Card>
+
+      {/* Right: question detail */}
+      {renderingContent}
     </div>
   );
 }

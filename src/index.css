@@ -57,6 +57,24 @@ body {
   position: relative;
   margin: 10px 0;
 }
+.code-template-pre {
+  background: #1a1b26;
+  color: #a9b1d6;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.5;
+  font-family: 'JetBrains Mono','Fira Code','Cascadia Code','Consolas','Monaco','Menlo',monospace;
+  font-variant-ligatures: normal;
+  border: 1px solid rgba(255,255,255,.06);
+}
+.code-template-pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+}
 .copy-btn {
   position: absolute;
   top: 8px;
