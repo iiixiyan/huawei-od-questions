@@ -88,7 +88,7 @@ export default function QuestionDetail() {
           {
             key: 'solution',
             label: '📖 题解',
-            children: <MarkdownRenderer content={(q.solution || '').replace(/^#code-switcher\s*$/gm, '').replace(/^#hot100-card.*$/gm, '')} />
+            children: <MarkdownRenderer content={(q.solution || '').replace(/^#code-switcher\s*$/gm, '').replace(/#hot100-card\s*\{[\s\S]*?\}/g, '')} />
           },
           {
             key: 'template',
