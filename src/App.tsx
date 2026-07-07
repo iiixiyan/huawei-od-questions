@@ -16,9 +16,9 @@ export default function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/questions" element={<QuestionList />} />
+            <Route path="/questions/" element={<QuestionList />} />
             <Route path="/question/:pid" element={<QuestionDetail />} />
-            <Route path="/favorites" element={<Favorites />} />
+            <Route path="/favorites/" element={<Favorites />} />
             <Route path="*" element={<HomePage />} />
           </Routes>
         </Layout>
