@@ -12,7 +12,7 @@ export default function App() {
     <ConfigProvider locale={zhCN} theme={{
       token: { borderRadius: 8, colorPrimary: '#1677ff' }
     }}>
-      <BrowserRouter>
+      <BrowserRouter basename="/huawei-od-questions">
         <Layout>
           <Routes>
             <Route path="/" element={<HomePage />} />
