@@ -119,8 +119,8 @@ body {
 
 /* Sidebar */
 .detail-sidebar {
-  width: 280px;
-  min-width: 280px;
+  width: 300px;
+  min-width: 300px;
   background: #fff;
   border-radius: 8px;
   border: 1px solid #e8e8e8;

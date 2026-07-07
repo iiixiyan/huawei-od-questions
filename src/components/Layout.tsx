@@ -26,7 +26,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           style={{ flex: 1, minWidth: 0 }}
         />
       </Header>
-      <Content style={{ maxWidth: 1400, width: '100%', margin: '12px auto', padding: '0 12px' }}>
+      <Content style={{ maxWidth: 1800, width: '100%', margin: '12px auto', padding: '0 12px' }}>
         {children}
       </Content>
       <Footer style={{ textAlign: 'center', color: '#999', padding: '16px', fontSize: 12 }}>

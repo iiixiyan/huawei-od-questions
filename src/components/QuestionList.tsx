@@ -96,7 +96,7 @@ export default function QuestionList() {
             const rate = parseAcceptRate(q.accept_rate || '');
             const tags = q.tags || q.topics || [];
             return (
-              <Col key={q.pid} xs={24} sm={12} md={8} lg={6}>
+              <Col key={q.pid} xs={24} sm={12} md={8} lg={6} xl={5}>
                 <Card hoverable size="small" onClick={() => nav('/question/' + q.pid)}
                   style={{ height: '100%' }}>
                   <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 6 }}>
