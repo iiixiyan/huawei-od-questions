@@ -38,16 +38,7 @@ export default function QuestionDetail() {
     fetch(BASE + 'index.json').then(r => r.json()).then(setIndexData).catch(() => {});
   }, []);
 
-  if (!q) return <Card loading style={{ minHeight: 400 }} />;
-
-  const rate = parseAcceptRate(q.accept_rate || '');
-  const tags = q.tags || q.topics || [];
-  const fav = isFavorite(q.pid);
-  const status = getStatus(q.pid);
-  const ct = q.code_templates || {};
-  const codeTemplate = ct[codeLang] || ct[codeLang + '.py3'] || ct[codeLang + '.cc14o2'] || '';
-
-  // Sidebar filtered list
+  // Sidebar filtered list — must be BEFORE early return (React hooks invariant)
   const allTags = indexData ? getAllTags(indexData.题目列表) : [];
   const sidebarList = useMemo(() => {
     if (!indexData) return [];
@@ -64,6 +55,15 @@ export default function QuestionDetail() {
     }
     return list;
   }, [indexData, sidebarSearch, sidebarTag]);
+
+  if (!q) return <Card loading style={{ minHeight: 400 }} />;
+
+  const rate = parseAcceptRate(q.accept_rate || '');
+  const tags = q.tags || q.topics || [];
+  const fav = isFavorite(q.pid);
+  const status = getStatus(q.pid);
+  const ct = q.code_templates || {};
+  const codeTemplate = ct[codeLang] || ct[codeLang + '.py3'] || ct[codeLang + '.cc14o2'] || '';
 
   const statusColors: Record<string, string> = {
     '3': '#52c41a', '4': '#73d13d', '5': '#faad14', '6': '#ff4d4f', '7': '#722ed1', '8': '#722ed1'
