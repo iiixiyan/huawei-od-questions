@@ -8,7 +8,7 @@ const { Header, Content, Footer } = AntLayout;
 export default function Layout({ children }: { children: ReactNode }) {
   const nav = useNavigate();
   const loc = useLocation();
-  const key = loc.pathname === '/' ? '/' : loc.pathname.startsWith('/question') ? '/questions' : loc.pathname;
+  const key = loc.pathname === '/' ? '/' : loc.pathname.startsWith('/question') ? '/questions/' : loc.pathname;
 
   return (
     <AntLayout style={{ minHeight: '100vh', background: '#f5f5f5' }}>
@@ -20,8 +20,8 @@ export default function Layout({ children }: { children: ReactNode }) {
           theme="dark" mode="horizontal" selectedKeys={[key]}
           items={[
             { key: '/', icon: <HomeOutlined />, label: '首页', onClick: () => nav('/') },
-            { key: '/questions', icon: <BookOutlined />, label: '题目列表', onClick: () => nav('/questions') },
-            { key: '/favorites', icon: <HeartOutlined />, label: '我的收藏', onClick: () => nav('/favorites') },
+            { key: '/questions/', icon: <BookOutlined />, label: '题目列表', onClick: () => nav('/questions/') },
+            { key: '/favorites/', icon: <HeartOutlined />, label: '我的收藏', onClick: () => nav('/favorites/') },
           ]}
           style={{ flex: 1, minWidth: 0 }}
         />
