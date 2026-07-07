@@ -9,7 +9,7 @@ export default defineConfig({
       output: {
         manualChunks(id: string) {
           if (id.includes('node_modules/antd')) return 'antd';
-          if (id.includes('node_modules/react-markdown') || id.includes('node_modules/remark-gfm')) return 'markdown';
+          if (id.includes('node_modules/react-markdown') || id.includes('node_modules/remark-') || id.includes('node_modules/rehype-') || id.includes('node_modules/katex')) return 'markdown';
         }
       }
     },
