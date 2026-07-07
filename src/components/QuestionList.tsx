@@ -22,11 +22,11 @@ export default function QuestionList() {
     fetch(DATA_URL).then(r => r.json()).then(setData).catch(() => {});
   }, []);
 
-  if (!data) return <Card loading style={{ minHeight: 400 }} />;
-
-  const allTags = getAllTags(data.题目列表);
+  // ALL hooks must run unconditionally - no early return before useMemo
+  const allTags = data ? getAllTags(data.题目列表) : [];
 
   const filtered = useMemo(() => {
+    if (!data) return [];
     let list = [...data.题目列表];
 
     if (search) {
@@ -51,6 +51,8 @@ export default function QuestionList() {
 
     return list;
   }, [data, search, difficulty, tagFilter, sort]);
+
+  if (!data) return <Card loading style={{ minHeight: 400 }} />;
 
   const statusColors: Record<string, string> = {
     '3': '#52c41a', '4': '#73d13d', '5': '#faad14', '6': '#ff4d4f', '7': '#722ed1', '8': '#722ed1'
